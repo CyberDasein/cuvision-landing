@@ -1,0 +1,395 @@
+/*
+    MIXINS
+*/
+@mixin transition() {
+  transition: 0.2s;
+}
+
+@mixin phColor($color, $fs: auto, $fw: normal) {
+  input::-webkit-input-placeholder,
+  textarea::-webkit-input-placeholder {
+    /* Chrome */
+    font-family: PT Root UI;
+    color: $color;
+    font-size: $fs;
+    font-weight: $fw;
+  }
+  input::-ms-input-placeholder,
+  textarea::-ms-input-placeholder {
+    /* IE 10+ */
+    font-family: PT Root UI;
+    color: $color;
+    font-size: $fs;
+    font-weight: $fw;
+  }
+  input::-moz-placeholder,
+  textarea::-moz-placeholder {
+    /* Firefox 19+ */
+    font-family: PT Root UI;
+    color: $color;
+    font-size: $fs;
+    font-weight: $fw;
+  }
+  input:-moz-placeholder,
+  textarea:-moz-placeholder {
+    /* Firefox 4 - 18 */
+    font-family: PT Root UI;
+    color: $color;
+    font-size: $fs;
+    font-weight: $fw;
+  }
+}
+
+@mixin inputClassic(
+  $widthInput: 242px,
+  $heightInput: 48px,
+  $paddingLRInput: 14px,
+  $paddingTBInput: 16px,
+  $fsInput: 16px
+) {
+  .input-ui {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: $widthInput;
+    &.datePicker {
+      & > .icon {
+        position: absolute;
+        top: 42px;
+        left: 17px;
+      }
+      & > input {
+        padding-left: 39px;
+      }
+    }
+    label {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    @include phColor($greyIcons, 16px, normal);
+    input {
+      background: $white;
+      border: 1px solid $greyBorders;
+      border-radius: 4px;
+      padding: $paddingTBInput $paddingLRInput;
+      font-size: $fsInput;
+      @include transition();
+      &:hover,
+      &:focus,
+      &:active {
+        border-color: $blueCtaButton;
+        @include transition();
+      }
+      &:disabled {
+        background: #f0f0f2;
+        color: $greyIcons;
+        &:hover {
+          border-color: $greyBorders;
+        }
+      }
+    }
+    &.phone {
+      input:active,
+      input:focus {
+        font-feature-settings:
+          "tnum" on,
+          "lnum" on;
+      }
+    }
+    &.password {
+      & > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        svg {
+          position: absolute;
+          right: 15px;
+          cursor: pointer;
+          display: none;
+          &.svg-not-see {
+            display: block;
+          }
+          &.svg-see {
+            display: none;
+          }
+        }
+      }
+    }
+    &.password.open-for-see {
+      & > div {
+        svg {
+          &.svg-not-see {
+            display: none;
+          }
+          &.svg-see {
+            display: block;
+          }
+        }
+      }
+    }
+    .error-block {
+      display: none;
+    }
+    &.error {
+      .error-block {
+        display: block;
+        position: absolute;
+        right: 0;
+        background: $redBg;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        border-radius: 4px;
+        padding: 8px 15px 8px 15px;
+        bottom: 56px;
+        max-width: 169px;
+        &:after {
+          content: "";
+          position: absolute;
+          border: 9px solid transparent;
+          border-top: 12px solid $redBg;
+          bottom: -14px;
+          right: 68px;
+        }
+      }
+      input {
+        border-color: $red;
+        color: $red;
+      }
+    }
+  }
+}
+
+@mixin whiteCircleBtn2($height, $width, $stroke) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: $height;
+  width: $width;
+  background: $white;
+  border-radius: 50%;
+  border: 0px;
+  filter: drop-shadow(0px 1px 11px rgba(180, 182, 200, 0.43));
+  &:hover {
+    background: $blueCtaButton;
+
+    svg {
+      path {
+        @if $stroke == true {
+          stroke: $white;
+        }
+        @if $stroke == false {
+          fill: $white;
+        }
+      }
+    }
+
+    @include transition;
+  }
+  &:active {
+    background: $blueLink;
+
+    svg {
+      path {
+        @if $stroke == true {
+          stroke: $white;
+        }
+        @if $stroke == false {
+          fill: $white;
+        }
+      }
+    }
+
+    @include transition;
+  }
+}
+
+@mixin checkbox(
+  $checkboxSize: 20px,
+  $labelTextSize: 16px,
+  $labelTextMarginLeft: 12px,
+  $labelWeight: 500,
+  $labelColor: $black,
+  $iconMarginLeft: 16px
+) {
+  .checkbox-ui {
+    & > input {
+      display: none;
+    }
+    & > input:checked + label {
+      & > .checkbox {
+        border: 2px solid $blueCtaButton;
+        background: $blueTabsBg;
+        width: $checkboxSize - 4;
+        height: $checkboxSize - 4;
+        & > svg {
+          display: block;
+        }
+      }
+    }
+    & > input:disabled + label {
+      .checkbox {
+        background: #f0f0f2;
+        border: 2px solid $greyBorders;
+        width: $checkboxSize - 4;
+        height: $checkboxSize - 4;
+        svg {
+          path {
+            stroke: $greyBorders;
+          }
+        }
+      }
+    }
+    & > label {
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      & > .checkbox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        width: $checkboxSize - 2;
+        height: $checkboxSize - 2;
+        background: $white;
+        border: 1px solid $greyBorders;
+        border-radius: 2px;
+        & > svg {
+          display: none;
+        }
+      }
+      & > .icon {
+        display: flex;
+        align-items: center;
+        margin-left: $iconMarginLeft;
+      }
+      & > .text {
+        font-style: normal;
+        font-weight: $labelWeight;
+        font-size: $labelTextSize;
+        margin-left: $labelTextMarginLeft;
+        color: $labelColor;
+      }
+      &:hover > .checkbox {
+        border: 2px solid $blueCtaButton;
+        width: $checkboxSize - 4 !important;
+        height: $checkboxSize - 4 !important;
+      }
+    }
+  }
+}
+
+@mixin blueCircleBtn($height, $width, $stroke) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $height;
+  width: $width;
+  border-radius: 50%;
+  background: $blueBgIcons;
+  border: 0px;
+  cursor: pointer;
+  @include transition;
+  &:hover {
+    background: $blueCtaButton;
+    @include transition;
+    svg {
+      path {
+        @if $stroke == true {
+          stroke: $white;
+        }
+        @if $stroke == false {
+          fill: $white;
+        }
+      }
+    }
+  }
+  &:active {
+    background: $blueLinks;
+    @include transition;
+  }
+}
+
+@mixin greyCircleBtn($height, $width, $stroke) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $height;
+  width: $width;
+  border-radius: 50%;
+  background: #f0f0f2;
+  border: 0px;
+  cursor: pointer;
+  @include transition;
+  &:hover {
+    background: $blueCtaButton;
+    @include transition;
+    svg {
+      path {
+        @if $stroke == true {
+          stroke: $white;
+        }
+        @if $stroke == false {
+          fill: $white;
+        }
+      }
+    }
+  }
+  &:active {
+    background: $blueLinks;
+    @include transition;
+  }
+}
+@mixin max-media-xs {
+  @media (max-width: 575.98px) {
+    @content;
+  }
+}
+@mixin min-media-xs {
+  @media (min-width: 576px) {
+    @content;
+  }
+}
+@mixin max-media-sm {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+@mixin min-media-sm {
+  @media (min-width: 768.98px) {
+    @content;
+  }
+}
+@mixin max-media-md {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+@mixin min-media-md {
+  @media (min-width: 992.98px) {
+    @content;
+  }
+}
+@mixin max-media-lg {
+  @media (max-width: 1279.98px) {
+    @content;
+  }
+}
+@mixin max-media-l {
+  @media (max-width: 1366px) {
+    @content;
+  }
+}
+@mixin max-media-xl {
+  @media (max-width: 1599.98px) {
+    @content;
+  }
+}
+@mixin min-media-xl {
+  @media (min-width: 1600px) {
+    @content;
+  }
+}
