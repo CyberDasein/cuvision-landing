@@ -5,6 +5,164 @@
   transition: 0.2s;
 }
 
+@mixin svgIconHover($size: 36px) {
+  .svg-hover-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: $size;
+      height: $size;
+      cursor: pointer;
+      svg {
+          position: absolute;
+          &:last-child {
+              opacity: 0;
+              z-index: 1;
+              @include transition();
+          }
+      }
+      &:hover {
+          svg:first-child {
+              opacity: 0;
+              display: none;
+              transition: 0.5s;
+              @include transition();
+          }
+          svg:last-child {
+              opacity: 1;
+              z-index: 2;
+              transform: scale(1.2);
+              @include transition();
+          }
+      }
+  }
+}
+
+@mixin select($width: 142px, $height: 48px, $fs: 16px, $fw: normal, $padding: 5px 23px 8px 17px) {
+  .select-ui {
+      position: relative;
+      width: 100%;
+      max-width: $width;
+      label {
+          display: block;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          margin-bottom: 8px;
+      }
+      select {
+          display: none;
+      }
+      .value {
+          display: flex;
+          align-items: center;
+          position: relative;
+          width: $width;
+          height: $height;
+          width: 100%;
+          cursor: pointer;
+          background: $white;
+          border: 1px solid $greyBorders;
+          box-sizing: border-box;
+          border-radius: 4px;
+          padding: $padding;
+          font-weight: $fw;
+          font-size: $fs;
+          font-feature-settings:
+              "tnum" on,
+              "lnum" on;
+          color: $black;
+          @include selectionTextNone;
+          svg {
+              position: absolute;
+              right: 4px;
+              @include transition;
+          }
+          span {
+              white-space: nowrap;
+              overflow: hidden;
+          }
+          &:hover {
+              border-color: $blueCtaButton;
+              @include transition;
+              svg {
+                  path {
+                      stroke: $blueCtaButton;
+                  }
+              }
+          }
+          &.active {
+              svg {
+                  transform: rotate(180deg);
+                  @include transition;
+              }
+          }
+      }
+      .values {
+          clip-path: polygon(0px 0px, 0px 0px, 0px 0px, 0px 0px);
+          transform: translateY(-20px);
+          opacity: 0;
+          position: absolute;
+          width: 100%;
+          background: $white;
+          border: 1px solid $greyBorders;
+          box-sizing: border-box;
+          border-radius: 4px;
+          padding-top: 6px;
+          padding-bottom: 6px;
+          margin-top: -8px;
+          z-index: 10;
+          @include transition;
+          &.active {
+              clip-path: unset;
+              transform: translateY(0px);
+              opacity: 1;
+              @include transition;
+          }
+          .item {
+              font-family: PT Root UI;
+              font-style: normal;
+              font-weight: normal;
+              font-size: 14px;
+              line-height: 18px;
+              font-feature-settings:
+                  "tnum" on,
+                  "lnum" on;
+              color: $black;
+              padding: 6px 11px 6px 11px;
+              cursor: pointer;
+              @include selectionTextNone;
+              &:hover {
+                  background: $blueTabsBg;
+                  @include transition;
+              }
+          }
+      }
+  }
+}
+
+@mixin selectionTextNone {
+  /**
+  * Для эксплорера
+  */
+  -ms-user-select: none;
+
+  /**
+  * Для мозилы
+  */
+  -moz-user-select: none;
+
+  /**
+  * Для конкверора
+  */
+  -khtml-user-select: none;
+
+  /**
+  * Для Сафари и Хрома
+  */
+  -webkit-user-select: none;
+}
 @mixin phColor($color, $fs: auto, $fw: normal) {
   input::-webkit-input-placeholder,
   textarea::-webkit-input-placeholder {
